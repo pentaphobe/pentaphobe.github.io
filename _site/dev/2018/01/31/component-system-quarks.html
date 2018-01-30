@@ -1,0 +1,54 @@
+<h1 id="developing-component-systems-with-quarks">Developing component systems with Quarks</h1>
+
+<p><em>Disclaimer: I use the term ‘quark’ because in Atomic Design, the meaning of an ‘atom’ has different meanings between individuals, disciplines, and teams</em></p>
+
+<h2 id="what-is-a-quark">What is a ‘quark’?</h2>
+
+<p>A quark is an irreducible design or code element from which components in atomic design may be constructed.</p>
+
+<p>It’s become apparent that for some people, a form input <em>with a label</em> might be considered an ‘atom’, whereas others might consider it a ‘molecule’ - rather than fuel the fires of contention I’ve chosen to re-define the building blocks.</p>
+
+<p>eg. Concretely, the simplest “input field with label” component mentioned above would be defined from something like the following Quarks</p>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;Text /&gt;</code> quark</li>
+  <li><code class="highlighter-rouge">&lt;Input /&gt;</code> quark</li>
+  <li>(optionally) <code class="highlighter-rouge">&lt;Icon /&gt;</code> quark</li>
+</ul>
+
+<p>These are then combined into our basic atom:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">InputField</span> <span class="o">=</span> <span class="p">({...</span><span class="nx">props</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+
+<span class="p">)</span>
+
+<span class="c1">// usage</span>
+
+<span class="o">&lt;</span><span class="nx">InputField</span>
+  <span class="nx">label</span><span class="o">=</span><span class="p">&lt;</span><span class="nc">Text</span> <span class="na">type=</span><span class="s1">'label'</span><span class="p">&gt;</span>Test field<span class="p">&lt;/</span><span class="nc">Text</span><span class="p">&gt;</span>
+  <span class="nx">icon</span><span class="o">=</span><span class="p">&lt;</span><span class="nc">Icon</span> <span class="na">name=</span><span class="s1">'attention'</span> <span class="p">/&gt;</span>
+  <span class="o">&gt;</span>
+
+<span class="c1">// or maybe</span>
+
+<span class="kd">const</span> <span class="nx">InputField</span> <span class="o">=</span> <span class="p">({</span><span class="nx">children</span><span class="p">,</span> <span class="p">...</span><span class="nx">props</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">Labels</span>  <span class="o">=</span> <span class="nx">filterChildrenByType</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">Text</span><span class="p">)</span>
+  <span class="kd">const</span> <span class="nx">Icon</span>    <span class="o">=</span> <span class="nx">filterChildrenByType</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">Icon</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="p">&lt;</span><span class="nc">InputField</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="err">!--</span> <span class="nt">child</span> <span class="nt">types</span> <span class="nt">are</span> <span class="nt">restricted</span> <span class="nt">and</span> <span class="nt">only</span> <span class="nt">the</span>
+      <span class="nt">parent</span> <span class="nt">element</span> <span class="nt">controls</span> <span class="nt">their</span> <span class="nt">position</span> <span class="err">-</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nc">Text</span> <span class="na">type=</span><span class="s1">'label'</span><span class="p">&gt;</span>Test field<span class="p">&lt;/</span><span class="nc">Text</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nc">Icon</span> <span class="na">name=</span><span class="s1">'attention'</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nc">InputField</span><span class="p">&gt;</span>
+
+</code></pre></div></div>
+
+<p><em>Side note: Whilst it’s tempting to make life easy and describe them as having a 1:1 correlation with HTML tags, this still isn’t technically right</em></p>
